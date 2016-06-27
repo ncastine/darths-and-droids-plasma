@@ -3,7 +3,7 @@
 
 # Workaround for OSX XQuartz private socket
 if [ `uname` == "Darwin" ]; then
-    which socat
+    which socat 2>&1 > /dev/null
 
     if [ $? -ne 0 ]; then
         echo "You must install socat"
