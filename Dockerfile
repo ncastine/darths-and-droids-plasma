@@ -1,6 +1,9 @@
 FROM centos:7
+VOLUME /plasma/app
 RUN yum update -y
 RUN yum install -y kde-workspace kdeplasma-addons
 RUN mkdir /var/run/dbus # Required to run DBus
-VOLUME /plasma/app
-CMD dbus-uuidgen > /etc/machine-id && dbus-daemon --system --fork && plasmapkg -t comic -i /plasma/app && kbuildsycoca4 && plasma-windowed comic
+RUN dbus-uuidgen > /etc/machine-id
+RUN dbus-daemon --system --fork
+RUN kbuildsycoca4
+CMD plasmapkg -t comic -i /plasma/app && sleep 5 && kbuildsycoca4 && sleep 5 && plasma-windowed comic && /bin/bash
