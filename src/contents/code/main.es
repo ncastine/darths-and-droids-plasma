@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2009 Matthias Fuchs <mat69@gmx.net>                     *
+ *   Copyright (C) 2016 Neil Castine <neil.castine@gmail.com>              *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -20,6 +20,8 @@
  *   Darths & Droids webcomic KDE plasma plugin was adapted by             *
  *   Neil Castine. Plugin last updated 22-August-2012.                     *
  ***************************************************************************/
+
+// https://techbase.kde.org/Development/Tutorials/Plasma4/ComicPlugin
 
 const baseUrl = "http://www.darthsanddroids.net";
 
