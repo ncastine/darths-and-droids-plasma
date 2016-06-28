@@ -29,12 +29,14 @@ if [ `uname` == "Darwin" ]; then
     DISPLAY=${IP_ADDR}:${DISP_NUM}
 else
     PRIV_FLAG="--privileged"
+    DISPLAY=unix${DISPLAY}
 fi
 
 # X11 forwarding notes from -
 # https://dzone.com/articles/docker-x11-client-via-ssh
 docker run $PRIV_FLAG --env="DISPLAY" \
-    --volume="$HOME/.Xauthority:/root/.Xauthority:rw" $*
+    --volume="$HOME/.Xauthority:/root/.Xauthority:rw" \
+    --volume=/tmp/.X11-unix:/tmp/.X11-unix $*
 
 if [ `uname` == "Darwin" ]; then
     kill %1 # Kill the socat job launched above
