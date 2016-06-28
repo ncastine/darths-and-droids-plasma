@@ -1,10 +1,4 @@
-FROM centos:7
-RUN yum update -y
-RUN yum install -y kde-workspace kdeplasma-addons
-RUN mkdir /var/run/dbus # Required to run DBus
-RUN dbus-uuidgen > /etc/machine-id
-RUN dbus-daemon --system --fork
-RUN kbuildsycoca4
+FROM phanect/kubuntu:14.04
 VOLUME /plasma/app
-ADD runPlasmoid.sh /bin/runPlasmoid.sh
-CMD ["/bin/runPlasmoid.sh", "comic", "/plasma/app"]
+ADD runPlasmoid.sh /runPlasmoid.sh
+CMD ["/bin/bash", "-l", "-c", "/runPlasmoid.sh comic /plasma/app/"]
