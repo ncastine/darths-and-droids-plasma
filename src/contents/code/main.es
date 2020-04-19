@@ -38,7 +38,7 @@ function init()
 function pageRetrieved(id, data)
 {
     // Regular expression to get comic image URL and title from web page
-    const expImageId = new RegExp("<img src=\"(/comics/darths(\\d{4}).jpg)\"[^a]*alt=\"([^\"]*)\">" );
+    const expImageId = new RegExp("<img.*?src=\"(/comics/darths(\\d{4}).jpg)\".*?alt=\"([^\"]*)\"");
 
     // Find the most recent comic
     if (id == comic.User) {
@@ -81,7 +81,7 @@ function pageRetrieved(id, data)
     }
 }
 
-// Get addtional text from Darths & Droids HTML page data
+// Get additional text from Darths & Droids HTML page data
 function GetAdditionalText(html) {
     var result = "";
     var copyOn = false;
