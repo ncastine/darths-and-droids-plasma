@@ -1,5 +1,8 @@
-# Output package
-*.comic
+# Build output
+build/
+
+# IDE configuration
+.vscode/
 
 # Operating system temporary files
 .DS*

@@ -13,10 +13,10 @@ Thanks to Docker you can build and test the plugin on Mac OS.
 3. [Homebrew](https://brew.sh/)
 4. Use Brew to install SOcket CAT relay: `brew install socat`
 
-### Build the Docker Image
+### Build the Comic Package
 
 ```
-./dockerBuild.sh
+./build.sh
 ```
 
 ### Run the Docker Image
@@ -25,6 +25,6 @@ Thanks to Docker you can build and test the plugin on Mac OS.
 ./dockerRun.sh
 ```
 
-The above command will use Docker to run a Linux environment with KDE 4.
+The above command will use Docker to run KDE.
 Then via X11 forwarding you should be able to see the Comic Strip application presented within your Mac desktop.
 Click the _Configure..._ button and then click the checkbox next to *Darths &amp; Droids* in order to activate the comic. 

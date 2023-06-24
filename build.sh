@@ -11,8 +11,10 @@ echo Building package version $VERSION
 
 FILE="darths_and_droids_$VERSION.comic"
 
-zip -r ../$FILE contents/code/main.es metadata.desktop vader.ico
+mkdir -p ../build
+
+zip -r ../build/$FILE contents/code/main.es metadata.desktop vader.ico
 
 popd
 
-echo Built package $FILE
+echo Built package build/$FILE

@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2016 Neil Castine <neil.castine@gmail.com>              *
+ *   Copyright (C) 2012 - 2023 Neil Castine <neil.castine@gmail.com>       *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -17,8 +17,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA .        *
  *                                                                         *
  *   Darths & Droids webcomic is copyright of "The Comic Irregulars."      *
- *   Darths & Droids webcomic KDE plasma plugin was adapted by             *
- *   Neil Castine. Plugin last updated 22-August-2012.                     *
+ *   The webcomic KDE plasma plugin was adapted with permission.           *
  ***************************************************************************/
 
 // https://techbase.kde.org/Development/Tutorials/Plasma4/ComicPlugin
@@ -31,12 +30,14 @@ function init()
     comic.comicAuthor = "The Comic Irregulars";
     comic.shopUrl = "http://www.cafepress.com/mezzacotta/6391587";
     comic.firstIdentifier = 1;
+    print("**** init: " + comic.websiteUrl);
 
     comic.requestPage(comic.websiteUrl, comic.User);
 }
 
 function pageRetrieved(id, data)
 {
+    print("**** page fetched: " + id);
     // Regular expression to get comic image URL and title from web page
     const expImageId = new RegExp("<img.*?src=\"(/comics/darths(\\d{4}).jpg)\".*?alt=\"([^\"]*)\"");
 
