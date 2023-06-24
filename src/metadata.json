@@ -1,0 +1,18 @@
+{
+    "KPlugin": {
+        "Authors": [
+            {
+                "Email": "neil.castine@gmail.com",
+                "Name": "Neil Castine"
+            }
+        ],
+        "Description": "Darths & Droids webcomic",
+        "Icon": "vader.ico",
+        "Id": "darths_and_droids",
+        "License": "GPLv2",
+        "Name": "Darths & Droids",
+        "Version": "1.0",
+        "Website": "https://www.pling.com/p/1080324"
+    },
+    "X-KDE-PlasmaComicProvider-SuffixType": "Number"
+}

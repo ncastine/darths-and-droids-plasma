@@ -13,7 +13,7 @@ FILE="darths_and_droids_$VERSION.comic"
 
 mkdir -p ../build
 
-zip -r ../build/$FILE contents/code/main.es metadata.desktop vader.ico
+zip -r ../build/$FILE contents/code/main.es metadata.* vader.ico
 
 popd
 

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+./build.sh
+
 # Copy our runner script into location that will be mounted
 cp runPlasmoid.sh build/run.sh
 

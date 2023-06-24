@@ -13,12 +13,6 @@ Thanks to Docker you can build and test the plugin on Mac OS.
 3. [Homebrew](https://brew.sh/)
 4. Use Brew to install SOcket CAT relay: `brew install socat`
 
-### Build the Comic Package
-
-```
-./build.sh
-```
-
 ### Run the Docker Image
 
 ```
