@@ -9,5 +9,5 @@ kpackagetool5 -t Plasma/Comic -i /home/darths/*.comic
 plasmoidviewer -a org.kde.plasma.comic &
 
 # File browser to view what is in the container.
-# Docker will shutdown when this browser closed.
+# Docker will shutdown when this browser is closed by user.
 dolphin
