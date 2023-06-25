@@ -22,12 +22,12 @@
 
 // https://techbase.kde.org/Development/Tutorials/Plasma4/ComicPlugin
 
-const baseUrl = "http://www.darthsanddroids.net";
+const baseUrl = "https://www.darthsanddroids.net";
 
 const ENABLE_DEBUG = true;
 
 // Storage for any debug messages.
-// Need this since it is hard to track down the print logging for Docker.
+// Needed since builtin print(...) requires SystemD and thus excludes Docker.
 debugMessages = [];
 
 // Helper to accumulate debug messages when enabled
@@ -35,17 +35,23 @@ function debug(message) {
     if (ENABLE_DEBUG) {
         debugMessages.push(message);
     }
-    // This method only works with Journald running. So NOT in docker.
+    // This method only works with SystemD running. So NOT in docker.
     print(message);
 }
 
+// Called for a page that is not cached yet
 function init() {
     comic.websiteUrl = baseUrl;
     comic.comicAuthor = "The Comic Irregulars";
     comic.shopUrl = "http://www.cafepress.com/mezzacotta/6391587";
     comic.firstIdentifier = 1;
 
-    debug("Init called");
+    debug("[Init] Specified: " + comic.identifierSpecified +
+        " Current: " + comic.identifier +
+        " Previous: " + comic.previousIdentifier +
+        " Next: " + comic.nextIdentifier +
+        " First: " + comic.firstIdentifier +
+        " Last: " + comic.lastIdentifier);
 
     comic.requestPage(comic.websiteUrl, comic.User);
 }
