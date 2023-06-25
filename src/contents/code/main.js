@@ -20,6 +20,7 @@
  *   The webcomic KDE plasma plugin was adapted with permission.           *
  ***************************************************************************/
 
+// Originally inspired by
 // https://techbase.kde.org/Development/Tutorials/Plasma4/ComicPlugin
 
 const baseUrl = "https://www.darthsanddroids.net";
