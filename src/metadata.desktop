@@ -3,7 +3,7 @@ Name=Darths & Droids
 Comment=Darths & Droids webcomic
 Type=Service
 X-KDE-ServiceTypes=Plasma/Comic
-Icon=vader.ico
+Icon=vader.png
 
 X-KDE-Library=plasma_comic_krossprovider
 X-KDE-PluginInfo-Author=Neil Castine

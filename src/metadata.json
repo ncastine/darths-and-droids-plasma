@@ -7,7 +7,7 @@
             }
         ],
         "Description": "Darths & Droids webcomic",
-        "Icon": "vader.ico",
+        "Icon": "vader.png",
         "Id": "darths_and_droids",
         "License": "GPLv2",
         "Name": "Darths & Droids",
