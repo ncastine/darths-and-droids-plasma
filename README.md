@@ -9,7 +9,7 @@ Designed for the Comic Strip viewer in [KDE](https://kde.org "KDE Community Home
 1. GNU `make` utility or equivalent
 2. Zip utility
 
-### To Install
+### Direct Installation Process
 
 1. Run `make install` from the root of the source code
 2. Open the Comic Strip application on your desktop
@@ -29,17 +29,17 @@ With Docker you may test (to some extent) the plugin on Mac OS.
 3. [XQuartz](https://www.xquartz.org)
 5. Use [Homebrew](https://brew.sh) to install SOcket CAT multipurpose relay: `brew install socat`
 
-### Run the Docker Image
+### Run within a Docker Image
 
 ```
 ./dockerRun.sh
 ```
 
-The above script opens the KDE Comic viewer in a minimalist session.
+The above script opens the KDE Comic Strip viewer in a minimalist session.
 Via X11 forwarding you should be able to see the application presented within your Mac desktop.
-Click the _Configure..._ button and then click the checkbox next to *Darths &amp; Droids* in order to activate the comic. 
+Now you must **activate** the comic, starting with step **3** of the [direct installation](#direct-installation-process) above.
 
-In the minimalist environment you will not have full access to all the features of the Comic viewer.
+In the minimalist environment you will not have full access to all the features of the Comic Strip viewer.
 The `~/.xsession-errors` file is not populated without a full X Session.
 You will want to load KDE on a Linux VM if you need robust debugging.
 
