@@ -12,9 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    - name: make
-      run: make
+    - run: make
     - uses: actions/upload-artifact@v3
       with:
-        name: KDE Comic plugin
         path: build/*.comic
