@@ -24,20 +24,33 @@
 
 const baseUrl = "http://www.darthsanddroids.net";
 
-function init()
-{
+const ENABLE_DEBUG = true;
+
+// Storage for any debug messages.
+// Need this since it is hard to track down the print logging.
+debugMessages = [];
+
+// Helper to accumulate debug messages when enabled
+function debug(message) {
+    if (ENABLE_DEBUG) {
+        debugMessages.push(message);
+    }
+}
+
+function init() {
     comic.websiteUrl = baseUrl;
     comic.comicAuthor = "The Comic Irregulars";
     comic.shopUrl = "http://www.cafepress.com/mezzacotta/6391587";
     comic.firstIdentifier = 1;
-    print("**** init: " + comic.websiteUrl);
+
+    debug("**** init: " + comic.websiteUrl);
 
     comic.requestPage(comic.websiteUrl, comic.User);
 }
 
-function pageRetrieved(id, data)
-{
-    print("**** page fetched: " + id);
+function pageRetrieved(id, data) {
+    debug("**** page fetched: " + id);
+
     // Regular expression to get comic image URL and title from web page
     const expImageId = new RegExp("<img.*?src=\"(/comics/darths(\\d{4}).jpg)\".*?alt=\"([^\"]*)\"");
 
@@ -98,6 +111,16 @@ function GetAdditionalText(html) {
         } else if (copyOn) {
             result += line;
         }
+    }
+
+    // Prepend any debug messages, to ensure they can be seen
+    if (debugMessages.length > 0) {
+        var debugHeader = "";
+        for (var index in debugMessages) {
+            debugHeader += "<p>" + debugMessages[index] + "</p>";
+        }
+        debugHeader += " END DEBUG";
+        result = debugHeader + result;
     }
 
     return result;
