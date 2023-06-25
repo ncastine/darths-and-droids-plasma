@@ -10,8 +10,8 @@ Thanks to Docker you can build and test the plugin on Mac OS.
 
 1. GNU `make` utility or equivalent
 2. [Docker Desktop](https://www.docker.com/products/docker-desktop)
-3. [XQuartz](https://www.xquartz.org/)
-4. [Homebrew](https://brew.sh/)
+3. [XQuartz](https://www.xquartz.org)
+4. [Homebrew](https://brew.sh)
 5. Use Brew to install SOcket CAT multipurpose relay: `brew install socat`
 
 ### Run the Docker Image
