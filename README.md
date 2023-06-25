@@ -32,12 +32,15 @@ With Docker you may test (to some extent) the plugin on Mac OS.
 ### Run within a Docker Image
 
 ```
-./dockerRun.sh
+make docker
 ```
 
 The above script opens the KDE Comic Strip viewer in a minimalist session.
 Via X11 forwarding you should be able to see the application presented within your Mac desktop.
 Now you must **activate** the comic, starting with step **3** of the [direct installation](#direct-installation-process) above.
+
+> The above command intentionally creates a **temporary** image without any saved state.
+> This is ideal for active development, with frequent source changes.
 
 In the minimalist environment you will not have full access to all the features of the Comic Strip viewer.
 The `~/.xsession-errors` file is not populated without a full X Session.
