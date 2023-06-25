@@ -27,7 +27,7 @@ install: package
 
 # Remove any versions of our comic package from KDE for current user
 uninstall:
-	kpackagetool5 -t Plasma/Comic -i $(name)
+	kpackagetool5 -t Plasma/Comic -r $(name)
 
 # Run the comic in a temporary Docker container. Does NOT save state.
 docker: package
