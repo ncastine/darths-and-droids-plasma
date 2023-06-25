@@ -27,7 +27,7 @@ const baseUrl = "http://www.darthsanddroids.net";
 const ENABLE_DEBUG = true;
 
 // Storage for any debug messages.
-// Need this since it is hard to track down the print logging.
+// Need this since it is hard to track down the print logging for Docker.
 debugMessages = [];
 
 // Helper to accumulate debug messages when enabled
@@ -35,6 +35,8 @@ function debug(message) {
     if (ENABLE_DEBUG) {
         debugMessages.push(message);
     }
+    // This method only works with Journald running. So NOT in docker.
+    print(message);
 }
 
 function init() {
@@ -43,13 +45,13 @@ function init() {
     comic.shopUrl = "http://www.cafepress.com/mezzacotta/6391587";
     comic.firstIdentifier = 1;
 
-    debug("**** init: " + comic.websiteUrl);
+    debug("Init called");
 
     comic.requestPage(comic.websiteUrl, comic.User);
 }
 
 function pageRetrieved(id, data) {
-    debug("**** page fetched: " + id);
+    debug("Page fetched: " + id);
 
     // Regular expression to get comic image URL and title from web page
     const expImageId = new RegExp("<img.*?src=\"(/comics/darths(\\d{4}).jpg)\".*?alt=\"([^\"]*)\"");
