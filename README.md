@@ -1,5 +1,7 @@
 # Darths &amp; Droids Plasma Comic Plugin
 
+![Make workflow](../../actions/workflows/make.yml/badge.svg)
+
 Designed for the Comic Strip viewer in [KDE](https://kde.org "KDE Community Home") Plasma desktop.
 
 ## Direct Installation from Source (KDE Plasma Users Only)
