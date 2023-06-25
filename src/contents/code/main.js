@@ -25,10 +25,11 @@
 
 const baseUrl = "https://www.darthsanddroids.net";
 
+// Enable display of debug messages in comic Alt text
 const ENABLE_DEBUG = true;
 
-// Storage for any debug messages.
-// Needed since builtin print(...) requires SystemD and thus excludes Docker.
+// Fallback storage for debug messages.
+// Needed for Docker since builtin print(...) requires full X Session.
 debugMessages = [];
 
 // Helper to accumulate debug messages when enabled
@@ -36,8 +37,9 @@ function debug(message) {
     if (ENABLE_DEBUG) {
         debugMessages.push(message);
     }
-    // This method only works with SystemD running. So NOT in docker.
-    print(message);
+    // This does nothing unless full X Session is running. So NOT in Docker.
+    // Prefix, since it goes to shared file (generally ~/.xsession-errors).
+    print("Comic(Darths&Droids): " + message);
 }
 
 // Called for a page that is not cached yet
