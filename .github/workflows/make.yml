@@ -1,4 +1,4 @@
-name: Make/Zip CI
+name: Make CI
 
 on:
   push:
@@ -16,5 +16,5 @@ jobs:
       run: make
     - uses: actions/upload-artifact@v3
       with:
-        name: "KDE Comic plugin"
+        name: KDE Comic plugin
         path: build/*.comic
