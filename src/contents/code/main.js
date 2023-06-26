@@ -58,17 +58,22 @@ function init() {
 
     // Determine the latest identifier when not known
     if (!comic.lastIdentifier) {
+        debug("[Init] Fetching last page");
         comic.requestPage(baseUrl, comic.User);
     }
 
     // Start at the beginning if the engine does not provide an identifier
     if (!comic.identifierSpecified || !comic.identifier) {
+        debug("[Init] Set current to first page");
         comic.identifier = comic.firstIdentifier;
     }
 
     // Fetch the current page. Set current URL to specific episode.
-    comic.websiteUrl += '/episodes/' + zeroPad(getComicNumber(comic.identifier)) + '.html';
-    comic.requestPage(comic.websiteUrl, comic.Page);
+    var normalized = zeroPad(getComicNumber(comic.identifier));
+    var url = baseUrl + '/episodes/' + normalized + '.html';
+    comic.websiteUrl = url;
+    debug("[Init] Fetching comic " + url);
+    comic.requestPage(url, comic.Page);
 }
 
 function pageRetrieved(id, data) {
