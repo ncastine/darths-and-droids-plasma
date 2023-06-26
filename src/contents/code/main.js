@@ -56,7 +56,19 @@ function init() {
         " First: " + comic.firstIdentifier +
         " Last: " + comic.lastIdentifier);
 
-    comic.requestPage(comic.websiteUrl, comic.User);
+    // Determine the latest identifier when not known
+    if (!comic.lastIdentifier) {
+        comic.requestPage(baseUrl, comic.User);
+    }
+
+    // Start at the beginning if the engine does not provide an identifier
+    if (!comic.identifierSpecified || !comic.identifier) {
+        comic.identifier = comic.firstIdentifier;
+    }
+
+    // Fetch the current page. Set current URL to specific episode.
+    comic.websiteUrl += '/episodes/' + zeroPad(getComicNumber(comic.identifier)) + '.html';
+    comic.requestPage(comic.websiteUrl, comic.Page);
 }
 
 function pageRetrieved(id, data) {
@@ -65,27 +77,19 @@ function pageRetrieved(id, data) {
     // Regular expression to get comic image URL and title from web page
     const expImageId = new RegExp("<img.*?src=\"(/comics/darths(\\d{4}).jpg)\".*?alt=\"([^\"]*)\"");
 
-    // Find the most recent comic
+    // Find the most recent comic. Do not render.
     if (id == comic.User) {
         // Darths & Droids home page has latest comic image
-        matchLast = expImageId.exec(data);
+        var matchLast = expImageId.exec(data);
 
         if (matchLast != null) {
-            // Need to specify base-10 since numbers starting with "0" are
-            // interpreted as octal by some JavaScript implementations
-            comic.lastIdentifier = parseInt(matchLast[2], 10);
-
-            var url = baseUrl + "/episodes/";
-            url += PadDigits(comic.identifier, 4) + ".html";
-
-            comic.requestPage(url, comic.Page);
+            comic.lastIdentifier = getComicNumber(matchLast[2]);
         } else {
             comic.error();
         }
-    }
-
-    if (id == comic.Page) {
-        matchComic = expImageId.exec(data);
+    } else if (id == comic.Page) {
+        // A standard page parsing. Find the image.
+        var matchComic = expImageId.exec(data);
 
         if (matchComic != null) {
             var imageUrl = baseUrl + matchComic[1];
@@ -99,9 +103,15 @@ function pageRetrieved(id, data) {
                 comic.additionalText = addText;
             }
 
+            // Fetch just the image. The engine will display it in panel.
             comic.requestPage(imageUrl, comic.Image);
         } else {
             comic.error();
+        }
+
+        // If current page is the last page, make call the check if there is a new last page
+        if (comic.identifier == comic.lastIdentifier) {
+            comic.requestPage(baseUrl, comic.User);
         }
     }
 }
@@ -137,9 +147,13 @@ function GetAdditionalText(html) {
     return result;
 }
 
-function PadDigits(input, totalDigits) {
-    input = new String(input); // Ensure input is in string format
-    totalDigits = new Number(totalDigits);
+// Zero-pad a number string from the left.
+// Default is 4 digits.
+function zeroPad(input, totalDigits) {
+    // Ensure input is in string format
+    input = new String(input);
+    // Default to 4 digits
+    totalDigits = new Number(totalDigits || 4);
 
     var result = input;
 
@@ -150,4 +164,13 @@ function PadDigits(input, totalDigits) {
     }
 
     return result.toString(); // Return as simple string
+}
+
+// Get the comic number part from an identifier string.
+// Result is a plain number without any padding.
+// In the future the identifier may also include language code.
+function getComicNumber(identifier) {
+    // Need to specify base-10 since numbers starting with "0" are
+    // interpreted as octal by some JavaScript implementations
+    return parseInt(identifier, 10);
 }
