@@ -30,7 +30,6 @@ if [ `uname` == "Darwin" ]; then
     DISPLAY=${IP_ADDR}:${DISP_NUM}
 else
     PRIV_FLAG="--privileged"
-    DISPLAY=unix${DISPLAY}
 fi
 
 # X11 forwarding notes from -
