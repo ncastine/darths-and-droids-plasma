@@ -1,5 +1,6 @@
 #!/bin/bash
 # Run graphical app in Docker with X11. Works on Mac and Linux.
+# Example usage: ./dockerX11.sh kdeneon/plasma:developer dolphin
 
 # Workaround for OSX XQuartz private socket
 if [ `uname` == "Darwin" ]; then
