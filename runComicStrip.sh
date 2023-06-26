@@ -1,5 +1,5 @@
 #!/bin/sh
-# Entry point for a KDE 5 Docker container. Just runs the Comic Strip app.
+# Entry point for a KDE 5 Docker container. Runs the Comic Strip app.
 
 # Register the comic that we provided via Docker volume mount
 kpackagetool5 -t Plasma/Comic -i /home/darths/*.comic

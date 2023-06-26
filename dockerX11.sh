@@ -1,18 +1,18 @@
 #!/bin/bash
-# Run graphical app in Docker with X11. Works for Mac and Linux.
+# Run graphical app in Docker with X11. Works on Mac and Linux.
 
 # Workaround for OSX XQuartz private socket
 if [ `uname` == "Darwin" ]; then
     which socat 2>&1 > /dev/null
 
     if [ $? -ne 0 ]; then
-        echo "You must install socat"
-        echo "If you already have Hombrew simply: brew install socat"
-        echo "Otherwsie visit the project homepage http://brew.sh"
+        echo You must install socat
+        echo If you already have Homebrew, simply: brew install socat
+        echo Otherwise, visit the project homepage http://brew.sh
         exit 1
     fi
 
-    # Mac IP, display num, abd socket notes from -
+    # Mac IP, display num, and socket notes from -
     # http://stackoverflow.com/questions/16296753/can-you-run-gui-apps-in-a-docker-container
 
     # Get our local IP address
