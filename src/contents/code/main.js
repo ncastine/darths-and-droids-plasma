@@ -23,14 +23,91 @@
 // Originally inspired by
 // https://techbase.kde.org/Development/Tutorials/Plasma4/ComicPlugin
 
-const baseUrl = "https://www.darthsanddroids.net";
+const BASE_URL = "https://www.darthsanddroids.net";
+
+// This comic starts at episode 1
+const FIRST_IDENTIFIER = 1;
 
 // Enable display of debug messages in comic Alt text
 const ENABLE_DEBUG = true;
 
+// Regular expression to get comic image URL and title from within page HTML
+const IMAGE_URL_PARSER = new RegExp("<img.*?src=\"(/comics/darths(\\d{4}).jpg)\".*?alt=\"([^\"]*)\"");
+
 // Fallback storage for debug messages.
 // Needed for Docker since builtin print(...) requires full X Session.
 debugMessages = [];
+
+// Don't want to fetch the last page more than once per session
+var fetchedLast = false;
+
+// Called by the comic engine for a page that is not cached yet
+function init() {
+    comic.websiteUrl = BASE_URL;
+    comic.comicAuthor = "The Comic Irregulars";
+    comic.shopUrl = "http://www.cafepress.com/mezzacotta/6391587";
+    comic.firstIdentifier = FIRST_IDENTIFIER;
+
+    debug("[Init] Specified: " + comic.identifierSpecified +
+        " Current: " + comic.identifier +
+        " Previous: " + comic.previousIdentifier +
+        " Next: " + comic.nextIdentifier +
+        " First: " + comic.firstIdentifier +
+        " Last: " + comic.lastIdentifier);
+
+    // Start at the beginning if the engine does not provide an identifier
+    if (!comic.identifierSpecified || !comic.identifier) {
+        debug("[Init] Set current to first page");
+        comic.identifier = comic.firstIdentifier;
+    }
+
+    // Fetch the current page. Set current URL to specific episode.
+    var url = buildEpisodeUrl(comic.identifier);
+    comic.websiteUrl = url;
+    debug("[Init] Fetching comic " + url);
+    comic.requestPage(url, comic.Page);
+}
+
+// Called by the comic engine when data is downloaded.
+// The 'id' is just a number for the type of request that was made.
+function pageRetrieved(id, data) {
+    debug("Page fetched: " + id);
+
+    // "User" indicates a most recent comic. Do not render.
+    // Just want to determine the last ID.
+    if (id == comic.User) {
+        fetchedLast = true;
+        // Darths & Droids home page has latest comic image
+        var matchLast = IMAGE_URL_PARSER.exec(data);
+
+        if (matchLast != null) {
+            comic.lastIdentifier = getComicNumber(matchLast[2]);
+        } else {
+            comic.error();
+        }
+    } else if (id == comic.Page) {
+        // A standard page parsing. Find the image.
+        var matchComic = IMAGE_URL_PARSER.exec(data);
+
+        if (matchComic != null) {
+            var imageUrl = BASE_URL + matchComic[1];
+
+            comic.title = matchComic[3];
+
+            // Get additional text from page
+            var addText = getAdditionalText(data);
+
+            if (addText != "") {
+                comic.additionalText = addText;
+            }
+
+            // Fetch just the image. The engine will display it in panel.
+            comic.requestPage(imageUrl, comic.Image);
+        } else {
+            comic.error();
+        }
+    }
+}
 
 // Helper to accumulate debug messages when enabled
 function debug(message) {
@@ -42,87 +119,15 @@ function debug(message) {
     print("Comic(Darths&Droids): " + message);
 }
 
-// Called for a page that is not cached yet
-function init() {
-    comic.websiteUrl = baseUrl;
-    comic.comicAuthor = "The Comic Irregulars";
-    comic.shopUrl = "http://www.cafepress.com/mezzacotta/6391587";
-    comic.firstIdentifier = 1;
-
-    debug("[Init] Specified: " + comic.identifierSpecified +
-        " Current: " + comic.identifier +
-        " Previous: " + comic.previousIdentifier +
-        " Next: " + comic.nextIdentifier +
-        " First: " + comic.firstIdentifier +
-        " Last: " + comic.lastIdentifier);
-
-    // Determine the latest identifier when not known
-    if (!comic.lastIdentifier) {
-        debug("[Init] Fetching last page");
-        comic.requestPage(baseUrl, comic.User);
-    }
-
-    // Start at the beginning if the engine does not provide an identifier
-    if (!comic.identifierSpecified || !comic.identifier) {
-        debug("[Init] Set current to first page");
-        comic.identifier = comic.firstIdentifier;
-    }
-
-    // Fetch the current page. Set current URL to specific episode.
+// Build a URL for a specific episode (comic number) defined by the identifier.
+// TODO: Support language code in the identifier.
+function buildEpisodeUrl(identifier) {
     var normalized = zeroPad(getComicNumber(comic.identifier));
-    var url = baseUrl + '/episodes/' + normalized + '.html';
-    comic.websiteUrl = url;
-    debug("[Init] Fetching comic " + url);
-    comic.requestPage(url, comic.Page);
-}
-
-function pageRetrieved(id, data) {
-    debug("Page fetched: " + id);
-
-    // Regular expression to get comic image URL and title from web page
-    const expImageId = new RegExp("<img.*?src=\"(/comics/darths(\\d{4}).jpg)\".*?alt=\"([^\"]*)\"");
-
-    // Find the most recent comic. Do not render.
-    if (id == comic.User) {
-        // Darths & Droids home page has latest comic image
-        var matchLast = expImageId.exec(data);
-
-        if (matchLast != null) {
-            comic.lastIdentifier = getComicNumber(matchLast[2]);
-        } else {
-            comic.error();
-        }
-    } else if (id == comic.Page) {
-        // A standard page parsing. Find the image.
-        var matchComic = expImageId.exec(data);
-
-        if (matchComic != null) {
-            var imageUrl = baseUrl + matchComic[1];
-
-            comic.title = matchComic[3];
-
-            // Get additional text from page
-            var addText = GetAdditionalText(data);
-
-            if (addText != "") {
-                comic.additionalText = addText;
-            }
-
-            // Fetch just the image. The engine will display it in panel.
-            comic.requestPage(imageUrl, comic.Image);
-        } else {
-            comic.error();
-        }
-
-        // If current page is the last page, make call the check if there is a new last page
-        if (comic.identifier == comic.lastIdentifier) {
-            comic.requestPage(baseUrl, comic.User);
-        }
-    }
+    return BASE_URL + '/episodes/' + normalized + '.html';
 }
 
 // Get additional text from Darths & Droids HTML page data
-function GetAdditionalText(html) {
+function getAdditionalText(html) {
     var result = "";
     var copyOn = false;
     var lines = html.split("\n");

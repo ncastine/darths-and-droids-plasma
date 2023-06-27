@@ -4,8 +4,9 @@
 # Register the comic that we provided via Docker volume mount
 kpackagetool5 -t Plasma/Comic -i /home/darths/*.comic
 
-# Run the comic viewer
+# Run the comic viewer. Two methods since each have different features.
 plasmoidviewer -a org.kde.plasma.comic &
+plasmawindowed org.kde.plasma.comic &
 
 # File browser to view what is in the container.
 # Docker will shutdown when this browser is closed by user.
