@@ -79,8 +79,8 @@ function pageRetrieved(id, data) {
     }
 
     // Normal episode fetch.
-    // If we got last page, for ID above, render it only if none specified.
-    if (id == comic.Page || !comic.identifierSpecified) {
+    // If we got latest, for ID above, render it only if no ID specified.
+    if (id == comic.Page || (!comic.identifierSpecified && id == comic.User)) {
         // A standard page parsing. Find the image.
         var matchComic = IMAGE_URL_PARSER.exec(data);
 
