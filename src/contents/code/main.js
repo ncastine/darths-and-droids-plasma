@@ -61,11 +61,17 @@ function init() {
         comic.identifier = comic.firstIdentifier;
     }
 
-    // Fetch the current page. Set current URL to specific episode.
-    var url = buildEpisodeUrl(comic.identifier);
-    comic.websiteUrl = url;
-    debug("[Init] Fetching comic " + url);
-    comic.requestPage(url, comic.Page);
+    // Fetch the last page if unknown, or we are on the last page.
+    // Important to check once from last page, just in case out of date.
+    if (!comic.lastIdentifier || (!fetchedLast &&
+            comic.identifier == comic.lastIdentifier)) {
+        // Visit comic home page to get latest ID
+        debug("[Init] Searching for latest comic ID");
+        comic.requestPage(BASE_URL, comic.User);
+    } else {
+        // Fetch comic for the specified identifier
+        navigateToEpisode(comic.identifier);
+    }
 }
 
 // Called by the comic engine when data is downloaded.
@@ -82,6 +88,9 @@ function pageRetrieved(id, data) {
 
         if (matchLast != null) {
             comic.lastIdentifier = getComicNumber(matchLast[2]);
+
+            // Now proceed to current specified identifier
+            navigateToEpisode(comic.identifier);
         } else {
             comic.error();
         }
@@ -117,6 +126,15 @@ function debug(message) {
     // This does nothing unless full X Session is running. So NOT in Docker.
     // Prefix, since it goes to shared file (generally ~/.xsession-errors).
     print("Comic(Darths&Droids): " + message);
+}
+
+// Go to and render the comic episode for the given identifier
+function navigateToEpisode(identifier) {
+    var url = buildEpisodeUrl(comic.identifier);
+    // Set current URL to specific episode
+    comic.websiteUrl = url;
+    debug("Fetching comic " + url);
+    comic.requestPage(url, comic.Page);
 }
 
 // Build a URL for a specific episode (comic number) defined by the identifier.
