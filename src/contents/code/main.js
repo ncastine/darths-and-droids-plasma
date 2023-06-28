@@ -38,9 +38,6 @@ const IMAGE_URL_PARSER = new RegExp("<img.*?src=\"(/comics/darths(\\d{4}).jpg)\"
 // Needed for Docker since builtin print(...) requires full X Session.
 debugMessages = [];
 
-// Don't want to fetch the last page more than once per session
-var fetchedLast = false;
-
 // Called by the comic engine for a page that is not cached yet
 function init() {
     comic.websiteUrl = BASE_URL;
@@ -49,28 +46,16 @@ function init() {
     comic.firstIdentifier = FIRST_IDENTIFIER;
 
     debug("[Init] Specified: " + comic.identifierSpecified +
-        " Current: " + comic.identifier +
-        " Previous: " + comic.previousIdentifier +
-        " Next: " + comic.nextIdentifier +
-        " First: " + comic.firstIdentifier +
-        " Last: " + comic.lastIdentifier);
+        " ID: " + comic.identifier);
 
-    // Start at the beginning if the engine does not provide an identifier
-    if (!comic.identifierSpecified || !comic.identifier) {
-        debug("[Init] Set current to first page");
-        comic.identifier = comic.firstIdentifier;
-    }
-
-    // Fetch the last page if unknown, or we are on the last page.
-    // Important to check once from last page, just in case out of date.
-    if (!comic.lastIdentifier || (!fetchedLast &&
-            comic.identifier == comic.lastIdentifier)) {
-        // Visit comic home page to get latest ID
-        debug("[Init] Searching for latest comic ID");
-        comic.requestPage(BASE_URL, comic.User);
-    } else {
+    // If identifier is specified fetch specific page by episode number.
+    // Luckily this series starts at 1, so no need to account for 0 ID.
+    if (comic.identifierSpecified) {
         // Fetch comic for the specified identifier
         navigateToEpisode(comic.identifier);
+    } else {
+        // Per API guide, go to latest comic page if identifier not specified
+        comic.requestPage(BASE_URL, comic.User);
     }
 }
 
@@ -79,22 +64,23 @@ function init() {
 function pageRetrieved(id, data) {
     debug("Page fetched: " + id);
 
-    // "User" indicates a most recent comic. Do not render.
-    // Just want to determine the last ID.
+    // "User" indicates the latest comic (home page) was fetched
     if (id == comic.User) {
-        fetchedLast = true;
         // Darths & Droids home page has latest comic image
         var matchLast = IMAGE_URL_PARSER.exec(data);
 
         if (matchLast != null) {
             comic.lastIdentifier = getComicNumber(matchLast[2]);
-
-            // Now proceed to current specified identifier
-            navigateToEpisode(comic.identifier);
+            debug("Parsed last ID: " + comic.lastIdentifier);
         } else {
+            debug("Failed to read latest page: " + data);
             comic.error();
         }
-    } else if (id == comic.Page) {
+    }
+
+    // Normal episode fetch.
+    // If we got last page, for ID above, render it only if none specified.
+    if (id == comic.Page || !comic.identifierSpecified) {
         // A standard page parsing. Find the image.
         var matchComic = IMAGE_URL_PARSER.exec(data);
 
@@ -113,6 +99,7 @@ function pageRetrieved(id, data) {
             // Fetch just the image. The engine will display it in panel.
             comic.requestPage(imageUrl, comic.Image);
         } else {
+            debug("Failed to read episode page: " + data);
             comic.error();
         }
     }
