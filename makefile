@@ -6,8 +6,9 @@ name := darths_and_droids
 # Build output directory
 build_dir := build
 
-# Read current version from source metadata
-version := $(shell grep X-KDE-PluginInfo-Version= src/metadata.desktop | cut -d = -f 2)
+# Read current version from source metadata.
+# Simple method that does not require actual JSON parser.
+version := $(shell grep '"Version"' src/metadata.json | sed 's/.*: *"//' | sed 's/".*//')
 
 # Full name of package file to build, including version, but without path
 file := $(name)_$(version).comic
