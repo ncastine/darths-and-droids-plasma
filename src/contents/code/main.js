@@ -132,7 +132,7 @@ function debug(message) {
 
 // Go to and render the comic episode for the given identifier
 function navigateToEpisode(identifier) {
-    var url = buildEpisodeUrl(comic.identifier);
+    var url = buildEpisodeUrl(identifier);
     // Set current URL to specific episode
     comic.websiteUrl = url;
     debug("Fetching comic " + url);
@@ -142,7 +142,7 @@ function navigateToEpisode(identifier) {
 // Build a URL for a specific episode (comic number) defined by the identifier.
 // TODO: Support language code in the identifier.
 function buildEpisodeUrl(identifier) {
-    var normalized = zeroPad(getComicNumber(comic.identifier));
+    var normalized = zeroPad(getComicNumber(identifier));
     return BASE_URL + '/episodes/' + normalized + '.html';
 }
 
