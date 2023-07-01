@@ -38,6 +38,9 @@ const IMAGE_URL_PARSER = new RegExp("<img.*?src=\"(/comics/darths(\\d{4}).jpg)\"
 // Needed for Docker since builtin print(...) requires full X Session.
 debugMessages = [];
 
+// Attempt to ensure fetching last does not clobber saved page
+fetchLast = false;
+
 // Called by the comic engine for a page that is not cached yet
 function init() {
     comic.websiteUrl = BASE_URL;
@@ -45,16 +48,19 @@ function init() {
     comic.shopUrl = "http://www.cafepress.com/mezzacotta/6391587";
     comic.firstIdentifier = FIRST_IDENTIFIER;
 
-    debug("[Init] Specified: " + comic.identifierSpecified +
-        " ID: " + comic.identifier);
+    debug("[Init] " + new Date().toISOString() +
+        " Specified: " + comic.identifierSpecified +
+        " ID: " + comic.identifier +
+        " fetchLast: " + fetchLast);
 
     // If identifier is specified fetch specific page by episode number.
     // Luckily this series starts at 1, so no need to account for 0 ID.
-    if (comic.identifierSpecified) {
+    if (comic.identifierSpecified && comic.identifier) {
         // Fetch comic for the specified identifier
         navigateToEpisode(comic.identifier);
     } else {
         // Per API guide, go to latest comic page if identifier not specified
+        fetchLast = true;
         comic.requestPage(BASE_URL, comic.User);
     }
 }
@@ -73,10 +79,12 @@ function pageRetrieved(id, data) {
 
         if (matchLast != null) {
             comic.lastIdentifier = getComicNumber(matchLast[2]);
-            debug("Parsed last ID: " + comic.lastIdentifier);
+            debug("Parsed last ID: " + comic.lastIdentifier +
+                " fetchLast: " + fetchLast);
 
-            // If no identifier then perform normal fetch of last page
-            if (!comic.identifierSpecified) {
+            // Only perform actual page fetch if needed
+            if (fetchLast) {
+                fetchLast = false;
                 // Identifier will work since each page has a permalink
                 navigateToEpisode(comic.lastIdentifier);
             }
