@@ -64,7 +64,9 @@ function init() {
 function pageRetrieved(id, data) {
     debug("Page fetched: " + id);
 
-    // "User" indicates the latest comic (home page) was fetched
+    // "User" indicates the latest comic (home page) was fetched.
+    // DO NOT render; do not download an image. Just capture information.
+    // The comic ending gets confused if you render during User response.
     if (id == comic.User) {
         // Darths & Droids home page has latest comic image
         var matchLast = IMAGE_URL_PARSER.exec(data);
@@ -72,15 +74,20 @@ function pageRetrieved(id, data) {
         if (matchLast != null) {
             comic.lastIdentifier = getComicNumber(matchLast[2]);
             debug("Parsed last ID: " + comic.lastIdentifier);
+
+            // If no identifier then perform normal fetch of last page
+            if (!comic.identifierSpecified) {
+                // Identifier will work since each page has a permalink
+                navigateToEpisode(comic.lastIdentifier);
+            }
         } else {
             debug("Failed to read latest page: " + data);
             comic.error();
         }
     }
 
-    // Normal episode fetch.
-    // If we got latest, for ID above, render it only if no ID specified.
-    if (id == comic.Page || (!comic.identifierSpecified && id == comic.User)) {
+    // Normal episode fetch
+    if (id == comic.Page) {
         // A standard page parsing. Find the image.
         var matchComic = IMAGE_URL_PARSER.exec(data);
 
