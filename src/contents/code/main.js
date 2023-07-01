@@ -49,14 +49,8 @@ function init() {
         " Specified: " + comic.identifierSpecified +
         " ID: " + comic.identifier);
 
-    // If identifier is specified fetch specific page by episode number.
-    // Luckily this series starts at 1, so no need to account for 0 ID.
-    if (comic.identifierSpecified) {
-        navigateToEpisode(comic.identifier);
-    } else {
-        // Per API for Number identifier, go to latest comic if unspecified
-        comic.requestPage(BASE_URL, comic.User);
-    }
+    // Visit home page to determine latest episode ID
+    comic.requestPage(BASE_URL, comic.User);
 }
 
 // Called by the comic engine when data is downloaded.
@@ -65,18 +59,19 @@ function pageRetrieved(id, data) {
     debug("Page fetched: " + id);
 
     // "User" indicates the latest comic (home page) was fetched.
-    // DO NOT render; do not download an image. Just capture information.
-    // The comic engine gets confused if you render during User response.
+    // DO NOT render or download related image. Just capture information.
+    // Comic engine gets confused if you render during User response.
     if (id == comic.User) {
         // Darths & Droids home page has latest comic image
         var matchLast = IMAGE_URL_PARSER.exec(data);
 
         if (matchLast != null) {
+            // API has a "helpful" quirk. When we set comic.lastIdentifier
+            // it also sets comic.identifier to last when undefined or 0.
+            // This forces us to start at last episode when nothing cached.
             comic.lastIdentifier = getComicNumber(matchLast[2]);
             debug("Parsed last ID: " + comic.lastIdentifier + " current ID: " + comic.identifier);
-
-            // Fetch comic for the specified identifier.
-            // Goes to first episode if undefined.
+            // Fetch comic for the specified identifier
             navigateToEpisode(comic.identifier);
         } else {
             debug("Failed to read latest page: " + data);
@@ -190,10 +185,6 @@ function zeroPad(input, totalDigits) {
 // Result is a plain number without any padding.
 // In the future the identifier may also include language code.
 function getComicNumber(identifier) {
-    // Start at first comic if undefined
-    if (!identifier) {
-        identifier = FIRST_IDENTIFIER;
-    }
     // Need to specify base-10 since numbers starting with "0" are
     // interpreted as octal by some JavaScript implementations
     return parseInt(identifier, 10);
