@@ -38,9 +38,6 @@ const IMAGE_URL_PARSER = new RegExp("<img.*?src=\"(/comics/darths(\\d{4}).jpg)\"
 // Needed for Docker since builtin print(...) requires full X Session.
 debugMessages = [];
 
-// Attempt to ensure fetching last does not clobber saved page
-fetchLast = false;
-
 // Called by the comic engine for a page that is not cached yet
 function init() {
     comic.websiteUrl = BASE_URL;
@@ -50,17 +47,14 @@ function init() {
 
     debug("[Init] " + new Date().toISOString() +
         " Specified: " + comic.identifierSpecified +
-        " ID: " + comic.identifier +
-        " fetchLast: " + fetchLast);
+        " ID: " + comic.identifier);
 
     // If identifier is specified fetch specific page by episode number.
     // Luckily this series starts at 1, so no need to account for 0 ID.
-    if (comic.identifierSpecified && comic.identifier) {
-        // Fetch comic for the specified identifier
+    if (comic.identifierSpecified) {
         navigateToEpisode(comic.identifier);
     } else {
-        // Per API guide, go to latest comic page if identifier not specified
-        fetchLast = true;
+        // Per API for Number identifier, go to latest comic if unspecified
         comic.requestPage(BASE_URL, comic.User);
     }
 }
@@ -72,22 +66,18 @@ function pageRetrieved(id, data) {
 
     // "User" indicates the latest comic (home page) was fetched.
     // DO NOT render; do not download an image. Just capture information.
-    // The comic ending gets confused if you render during User response.
+    // The comic engine gets confused if you render during User response.
     if (id == comic.User) {
         // Darths & Droids home page has latest comic image
         var matchLast = IMAGE_URL_PARSER.exec(data);
 
         if (matchLast != null) {
             comic.lastIdentifier = getComicNumber(matchLast[2]);
-            debug("Parsed last ID: " + comic.lastIdentifier +
-                " fetchLast: " + fetchLast);
+            debug("Parsed last ID: " + comic.lastIdentifier + " current ID: " + comic.identifier);
 
-            // Only perform actual page fetch if needed
-            if (fetchLast) {
-                fetchLast = false;
-                // Identifier will work since each page has a permalink
-                navigateToEpisode(comic.lastIdentifier);
-            }
+            // Fetch comic for the specified identifier.
+            // Goes to first episode if undefined.
+            navigateToEpisode(comic.identifier);
         } else {
             debug("Failed to read latest page: " + data);
             comic.error();
@@ -200,6 +190,10 @@ function zeroPad(input, totalDigits) {
 // Result is a plain number without any padding.
 // In the future the identifier may also include language code.
 function getComicNumber(identifier) {
+    // Start at first comic if undefined
+    if (!identifier) {
+        identifier = FIRST_IDENTIFIER;
+    }
     // Need to specify base-10 since numbers starting with "0" are
     // interpreted as octal by some JavaScript implementations
     return parseInt(identifier, 10);
