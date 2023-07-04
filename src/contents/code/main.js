@@ -40,13 +40,16 @@ function init() {
     comic.websiteUrl = BASE_URL
     comic.comicAuthor = 'The Comic Irregulars'
     comic.shopUrl = 'http://www.cafepress.com/mezzacotta/6391587'
-    // This comic starts at episode 1
-    comic.firstIdentifier = 1
 
     debugEnv()
 
-    // Visit home page to determine latest episode ID
-    comic.requestPage(BASE_URL, comic.User)
+    // Fetch page directly if we don't need more information
+    if (comic.identifierSpecified && comic.lastIdentifier) {
+        navigateToEpisode(comic.identifier)
+    } else {
+        // Visit home page to determine latest episode ID
+        comic.requestPage(BASE_URL, comic.User)
+    }
 }
 
 // Called by the comic engine when data is downloaded.
@@ -67,16 +70,20 @@ function pageRetrieved(id, data) {
             // This forces us to start at last episode when nothing cached.
             comic.lastIdentifier = getComicNumber(matchLast[2])
             debug('Parsed last ID: ' + comic.lastIdentifier + ' current ID: ' + comic.identifier)
-            // Fetch comic for the specified identifier
-            navigateToEpisode(comic.identifier)
+            // Switch to specified episode if different from last
+            if (comic.lastIdentifier != comic.identifier) {
+                navigateToEpisode(comic.identifier)
+                return
+            }
         } else {
             debug('Failed to read latest page: ' + data)
             comic.error()
+            return
         }
     }
 
     // Normal episode fetch
-    if (id == comic.Page) {
+    if (id == comic.Page || id == comic.User) {
         // A standard page parsing. Find the image.
         var matchComic = IMAGE_URL_PARSER.exec(data)
 
