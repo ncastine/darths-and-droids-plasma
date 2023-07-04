@@ -29,7 +29,7 @@ const BASE_URL = 'https://www.darthsanddroids.net'
 const ENABLE_DEBUG = true
 
 // Regular expression to get comic image URL and title from within page HTML
-const IMAGE_URL_PARSER = new RegExp(/<img.*?src="(\/comics\/darths(\d{4}).jpg)".*?alt="([^"]*)"/)
+const IMAGE_URL_PARSER = /<img.*?src="(\/comics\/darths(\d{4}).jpg)".*?alt="([^"]*)"/i
 
 // Fallback storage for debug messages.
 // Needed for Docker since builtin print(...) requires full X Session.
