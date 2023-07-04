@@ -23,13 +23,13 @@
 // Originally inspired by
 // https://techbase.kde.org/Development/Tutorials/Plasma4/ComicPlugin
 
-const BASE_URL = 'https://www.darthsanddroids.net';
+const BASE_URL = 'https://www.darthsanddroids.net'
 
 // Enable display of debug messages in comic Alt text
-const ENABLE_DEBUG = true;
+const ENABLE_DEBUG = true
 
 // Regular expression to get comic image URL and title from within page HTML
-const IMAGE_URL_PARSER = new RegExp("<img.*?src=\"(/comics/darths(\\d{4}).jpg)\".*?alt=\"([^\"]*)\"");
+const IMAGE_URL_PARSER = new RegExp(/<img.*?src="(\/comics\/darths(\d{4}).jpg)".*?alt="([^"]*)"/)
 
 // Fallback storage for debug messages.
 // Needed for Docker since builtin print(...) requires full X Session.
