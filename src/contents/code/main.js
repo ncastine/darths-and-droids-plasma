@@ -25,9 +25,6 @@
 
 const BASE_URL = "https://www.darthsanddroids.net";
 
-// This comic starts at episode 1
-const FIRST_IDENTIFIER = 1;
-
 // Enable display of debug messages in comic Alt text
 const ENABLE_DEBUG = true;
 
@@ -43,11 +40,10 @@ function init() {
     comic.websiteUrl = BASE_URL;
     comic.comicAuthor = "The Comic Irregulars";
     comic.shopUrl = "http://www.cafepress.com/mezzacotta/6391587";
-    comic.firstIdentifier = FIRST_IDENTIFIER;
+    // This comic starts at episode 1
+    comic.firstIdentifier = 1;
 
-    debug("[Init] " + new Date().toISOString() +
-        " Specified: " + comic.identifierSpecified +
-        " ID: " + comic.identifier);
+    debugEnv();
 
     // Visit home page to determine latest episode ID
     comic.requestPage(BASE_URL, comic.User);
@@ -105,6 +101,24 @@ function pageRetrieved(id, data) {
     }
 }
 
+// Attempt to print the current environment
+function debugEnv() {
+    var envStr = 'comic('  + listProperties(comic) + ') ';
+    debug(envStr.trim());
+}
+
+// String-ify object properties
+function listProperties(obj) {
+    if (!obj) return '';
+    var propStr = '';
+    var keys = Object.getOwnPropertyNames(obj);
+    for (var i = 0; i < keys.length; ++i) {
+        var key = keys[i];
+        propStr += key + '[' + obj[key] + '] ';
+    }
+    return propStr.trim();
+}
+
 // Helper to accumulate debug messages when enabled
 function debug(message) {
     if (ENABLE_DEBUG) {
@@ -112,7 +126,7 @@ function debug(message) {
     }
     // This does nothing unless full X Session is running. So NOT in Docker.
     // Prefix, since it goes to shared file (generally ~/.xsession-errors).
-    print("Comic(Darths&Droids): " + message);
+    print("Comic(Darths&Droids) " + new Date().toISOString() + ": " + message);
 }
 
 // Go to and render the comic episode for the given identifier
