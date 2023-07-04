@@ -23,7 +23,7 @@
 // Originally inspired by
 // https://techbase.kde.org/Development/Tutorials/Plasma4/ComicPlugin
 
-const BASE_URL = "https://www.darthsanddroids.net";
+const BASE_URL = 'https://www.darthsanddroids.net';
 
 // Enable display of debug messages in comic Alt text
 const ENABLE_DEBUG = true;
@@ -38,8 +38,8 @@ debugMessages = [];
 // Called by the comic engine for a page that is not cached yet
 function init() {
     comic.websiteUrl = BASE_URL;
-    comic.comicAuthor = "The Comic Irregulars";
-    comic.shopUrl = "http://www.cafepress.com/mezzacotta/6391587";
+    comic.comicAuthor = 'The Comic Irregulars';
+    comic.shopUrl = 'http://www.cafepress.com/mezzacotta/6391587';
     // This comic starts at episode 1
     comic.firstIdentifier = 1;
 
@@ -52,7 +52,7 @@ function init() {
 // Called by the comic engine when data is downloaded.
 // The 'id' is just a number for the type of request that was made.
 function pageRetrieved(id, data) {
-    debug("Page fetched: " + id);
+    debug('Page fetched: ' + id);
 
     // "User" indicates the latest comic (home page) was fetched.
     // DO NOT render or download related image. Just capture information.
@@ -66,11 +66,11 @@ function pageRetrieved(id, data) {
             // it also sets comic.identifier to last when undefined or 0.
             // This forces us to start at last episode when nothing cached.
             comic.lastIdentifier = getComicNumber(matchLast[2]);
-            debug("Parsed last ID: " + comic.lastIdentifier + " current ID: " + comic.identifier);
+            debug('Parsed last ID: ' + comic.lastIdentifier + ' current ID: ' + comic.identifier);
             // Fetch comic for the specified identifier
             navigateToEpisode(comic.identifier);
         } else {
-            debug("Failed to read latest page: " + data);
+            debug('Failed to read latest page: ' + data);
             comic.error();
         }
     }
@@ -88,14 +88,14 @@ function pageRetrieved(id, data) {
             // Get additional text from page
             var addText = getAdditionalText(data);
 
-            if (addText != "") {
+            if (addText) {
                 comic.additionalText = addText;
             }
 
             // Fetch just the image. The engine will display it in panel.
             comic.requestPage(imageUrl, comic.Image);
         } else {
-            debug("Failed to read episode page: " + data);
+            debug('Failed to read episode page: ' + data);
             comic.error();
         }
     }
@@ -103,7 +103,7 @@ function pageRetrieved(id, data) {
 
 // Attempt to print the current environment
 function debugEnv() {
-    var envStr = 'comic('  + listProperties(comic) + ') ';
+    var envStr = 'comic(' + listProperties(comic) + ') ';
     debug(envStr.trim());
 }
 
@@ -126,7 +126,7 @@ function debug(message) {
     }
     // This does nothing unless full X Session is running. So NOT in Docker.
     // Prefix, since it goes to shared file (generally ~/.xsession-errors).
-    print("Comic(Darths&Droids) " + new Date().toISOString() + ": " + message);
+    print('Comic(Darths&Droids) ' + new Date().toISOString() + ': ' + message);
 }
 
 // Go to and render the comic episode for the given identifier
@@ -134,7 +134,7 @@ function navigateToEpisode(identifier) {
     var url = buildEpisodeUrl(identifier);
     // Set current URL to specific episode
     comic.websiteUrl = url;
-    debug("Fetching comic " + url);
+    debug('Fetching comic ' + url);
     comic.requestPage(url, comic.Page);
 }
 
@@ -147,7 +147,7 @@ function buildEpisodeUrl(identifier) {
 
 // Get additional text from Darths & Droids HTML page data
 function getAdditionalText(html) {
-    var result = "";
+    var result = '';
     var copyOn = false;
     var lines = html.split("\n");
 
@@ -165,11 +165,11 @@ function getAdditionalText(html) {
 
     // Prepend any debug messages, to ensure they can be seen
     if (debugMessages.length > 0) {
-        var debugHeader = "";
+        var debugHeader = '';
         for (var index in debugMessages) {
-            debugHeader += "<p>" + debugMessages[index] + "</p>";
+            debugHeader += '<p>' + debugMessages[index] + '</p>';
         }
-        debugHeader += " END DEBUG";
+        debugHeader += ' END DEBUG';
         result = debugHeader + result;
     }
 
