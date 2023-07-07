@@ -73,7 +73,7 @@ function pageRetrieved(id, data) {
             comic.lastIdentifier = getComicNumber(matchLast[2])
             debug('Parsed last ID: ' + comic.lastIdentifier + ' current ID: ' + comic.identifier)
             // Switch to specified episode if different from last
-            if (comic.lastIdentifier != comic.identifier) {
+            if (comic.identifierSpecified && comic.lastIdentifier != comic.identifier) {
                 navigateToEpisode(comic.identifier)
                 return
             }
