@@ -42,6 +42,11 @@ function init() {
     comic.comicAuthor = 'The Comic Irregulars'
     comic.shopUrl = 'http://www.cafepress.com/mezzacotta/6391587'
 
+    // Define our own URL type ID valus.
+    // The builtin comic.Page and comic.User seem to fail for caching.
+    comic.episodeUrlId = 256
+    comic.latestEpisodeUrlId = 257
+
     debugEnv()
 
     // Fetch page directly if we don't need more information
@@ -49,7 +54,7 @@ function init() {
         navigateToEpisode(comic.identifier)
     } else {
         // Visit home page to determine latest episode ID
-        comic.requestPage(BASE_URL, comic.User)
+        comic.requestPage(BASE_URL, comic.latestEpisodeUrlId)
     }
 }
 
@@ -61,7 +66,7 @@ function pageRetrieved(id, data) {
     // "User" indicates the latest comic (home page) was fetched.
     // DO NOT render or download related image. Just capture information.
     // Comic engine gets confused if you render during User response.
-    if (id == comic.User) {
+    if (id == comic.latestEpisodeUrlId) {
         // Darths & Droids home page has latest comic image
         var matchLast = IMAGE_URL_PARSER.exec(data)
 
@@ -85,7 +90,7 @@ function pageRetrieved(id, data) {
     }
 
     // Normal episode fetch
-    if (id == comic.Page || id == comic.User) {
+    if (id == comic.episodeUrlId || id == comic.latestEpisodeUrlId) {
         // A standard page parsing. Find the image.
         var matchComic = IMAGE_URL_PARSER.exec(data)
 
@@ -104,10 +109,18 @@ function pageRetrieved(id, data) {
 
             // Fetch just the image. The engine will display it in panel.
             comic.requestPage(imageUrl, comic.Image)
+            return
         } else {
             debug('Failed to read episode page: ' + data)
             comic.error()
+            return
         }
+    }
+
+    if (id == comic.Image) {
+        debug('Image downloaded')
+    } else {
+        debug('Ignored request type ID: ' + id)
     }
 }
 
@@ -145,7 +158,7 @@ function navigateToEpisode(identifier) {
     // Set current URL to specific episode
     comic.websiteUrl = url
     debug('Fetching comic ' + url)
-    comic.requestPage(url, comic.Page)
+    comic.requestPage(url, comic.episodeUrlId)
 }
 
 // Build a URL for a specific episode (comic number) defined by the identifier.
