@@ -38,11 +38,12 @@ debugMessages = []
 
 // Called by the comic engine for a page that is not cached yet
 function init() {
-    comic.websiteUrl = BASE_URL
+    // NOTE: DO NOT set comic.websiteUrl to overall website.
+    // Delay until we have specific episode URL. Better for caching.
     comic.comicAuthor = 'The Comic Irregulars'
     comic.shopUrl = 'http://www.cafepress.com/mezzacotta/6391587'
 
-    // Define our own URL type ID valus.
+    // Define our own URL type ID values.
     // The builtin comic.Page and comic.User seem to fail for caching.
     comic.episodeUrlId = 256
     comic.latestEpisodeUrlId = 257
@@ -79,6 +80,8 @@ function pageRetrieved(id, data) {
                 navigateToEpisode(comic.identifier)
                 return
             }
+            // Set URL to permanent link for current episode
+            comic.websiteUrl = buildEpisodeUrl(comic.identifier)
         } else {
             debug('Failed to read latest page: ' + data)
             comic.error()
