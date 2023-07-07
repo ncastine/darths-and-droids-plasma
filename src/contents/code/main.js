@@ -43,11 +43,6 @@ function init() {
     comic.comicAuthor = 'The Comic Irregulars'
     comic.shopUrl = 'http://www.cafepress.com/mezzacotta/6391587'
 
-    // Define our own URL type ID values.
-    // The builtin comic.Page and comic.User seem to fail for caching.
-    comic.episodeUrlId = 256
-    comic.latestEpisodeUrlId = 257
-
     debugEnv()
 
     // Fetch page directly if we don't need more information
@@ -55,7 +50,7 @@ function init() {
         navigateToEpisode(comic.identifier)
     } else {
         // Visit home page to determine latest episode ID
-        comic.requestPage(BASE_URL, comic.latestEpisodeUrlId)
+        comic.requestPage(BASE_URL, comic.User)
     }
 }
 
@@ -63,7 +58,7 @@ function init() {
 // The 'id' is just a number for the type of request that was made.
 function pageRetrieved(id, data) {
     // Determine the latest episode
-    if (id == comic.latestEpisodeUrlId) {
+    if (id == comic.User) {
         debug('Looking up latest episode')
         // Darths & Droids home page has latest comic image
         var matchLast = IMAGE_URL_PARSER.exec(data)
@@ -90,7 +85,7 @@ function pageRetrieved(id, data) {
     }
 
     // Normal episode fetch
-    if (id == comic.episodeUrlId || id == comic.latestEpisodeUrlId) {
+    if (id == comic.Page || id == comic.User) {
         debug('Rendering episode: ' + comic.identifier)
         // A standard page parsing. Find the image.
         var matchComic = IMAGE_URL_PARSER.exec(data)
@@ -159,7 +154,7 @@ function navigateToEpisode(identifier) {
     // Set current URL to specific episode
     comic.websiteUrl = url
     debug('Fetching comic ' + url)
-    comic.requestPage(url, comic.episodeUrlId)
+    comic.requestPage(url, comic.Page)
 }
 
 // Build a URL for a specific episode (comic number) defined by the identifier.
