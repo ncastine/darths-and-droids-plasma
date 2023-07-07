@@ -61,12 +61,9 @@ function init() {
 // Called by the comic engine when data is downloaded.
 // The 'id' is just a number for the type of request that was made.
 function pageRetrieved(id, data) {
-    debug('Page fetched: ' + id)
-
-    // "User" indicates the latest comic (home page) was fetched.
-    // DO NOT render or download related image. Just capture information.
-    // Comic engine gets confused if you render during User response.
+    // Determine the latest episode
     if (id == comic.latestEpisodeUrlId) {
+        debug('Looking up latest episode')
         // Darths & Droids home page has latest comic image
         var matchLast = IMAGE_URL_PARSER.exec(data)
 
@@ -91,6 +88,7 @@ function pageRetrieved(id, data) {
 
     // Normal episode fetch
     if (id == comic.episodeUrlId || id == comic.latestEpisodeUrlId) {
+        debug('Rendering episode: ' + comic.identifier)
         // A standard page parsing. Find the image.
         var matchComic = IMAGE_URL_PARSER.exec(data)
 
@@ -120,7 +118,7 @@ function pageRetrieved(id, data) {
     if (id == comic.Image) {
         debug('Image downloaded')
     } else {
-        debug('Ignored request type ID: ' + id)
+        debug('Ignored request type ID: ' + id + ', data: ' + data)
     }
 }
 
