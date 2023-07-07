@@ -10,4 +10,4 @@ plasmawindowed org.kde.plasma.comic &
 
 # File browser to view what is in the container.
 # Docker will shutdown when this browser is closed by user.
-dolphin
+dolphin ~/.local/share/

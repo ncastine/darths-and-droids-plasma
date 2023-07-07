@@ -28,7 +28,8 @@ const BASE_URL = 'https://www.darthsanddroids.net'
 // Enable display of debug messages in comic Alt text
 const ENABLE_DEBUG = true
 
-// Regular expression to get comic image URL and title from within page HTML
+// Regular expression to get comic image URL and title from within page HTML.
+// NOTE: Named capturing groups do not seem to be supported in KDE.
 const IMAGE_URL_PARSER = /<img.*?src="(\/comics\/darths(\d{4}).jpg)".*?alt="([^"]*)"/i
 
 // Fallback storage for debug messages.
@@ -65,6 +66,7 @@ function pageRetrieved(id, data) {
         var matchLast = IMAGE_URL_PARSER.exec(data)
 
         if (matchLast != null) {
+            debug('match(' + matchLast + ')')
             // API has a "helpful" quirk. When we set comic.lastIdentifier
             // it also sets comic.identifier to last when undefined or 0.
             // This forces us to start at last episode when nothing cached.
@@ -88,6 +90,7 @@ function pageRetrieved(id, data) {
         var matchComic = IMAGE_URL_PARSER.exec(data)
 
         if (matchComic != null) {
+            debug('match(' + matchComic + ')')
             var imageUrl = BASE_URL + matchComic[1]
 
             comic.title = matchComic[3]
