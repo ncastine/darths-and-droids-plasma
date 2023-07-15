@@ -2,7 +2,6 @@
   "name": "darths-and-droids-plasma",
   "private": true,
   "description": "Lint runner for Darths & Droids KDE Plasma Comic",
-  "main": "src/contents/code/main.js",
   "devDependencies": {
     "eslint": "^8.45.0",
     "eslint-config-standard": "^17.1.0",
@@ -19,6 +18,8 @@
   },
   "keywords": [
     "comic",
+    "darth",
+    "droid",
     "kde",
     "plasma"
   ],
