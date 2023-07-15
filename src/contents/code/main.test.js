@@ -18,3 +18,11 @@ test('default padding is 4', () => {
 test('padding specified exactly', () => {
   expect(main.zeroPad('12', 2)).toBe('12')
 })
+
+test('default padding undefined input', () => {
+  expect(main.zeroPad()).toBe('0000BAD')
+})
+
+test('default padding null input', () => {
+  expect(main.zeroPad(null)).toBe('0000')
+})

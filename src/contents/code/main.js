@@ -207,8 +207,8 @@ function zeroPad (input, totalDigits) {
   // eslint-disable-next-line no-new-wrappers
   totalDigits = new Number(totalDigits || 4)
 
-  // Result must be a string
-  let result = '' + input
+  // Want a string result. Avoid undefined input value.
+  let result = input ? '' + input : ''
 
   const addCount = totalDigits - result.length
   for (let i = 0; i < addCount; i++) {
