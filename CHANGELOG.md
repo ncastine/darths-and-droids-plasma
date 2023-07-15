@@ -27,7 +27,3 @@ Imported into GitHub.
 Initial upload to KDE Files, for general availability to Plasma desktop users.
 
 Adapted with permission from David Morgan-Mar of [_The Comic Irregulars_](mailto:irregulars@darthsanddroids.net).
-
-English only for now. More languages coming _soon_.
-
-> With hindsight from _the future (2023-07-14)_. The comic publisher stopped supporting multiple languages before completion of the Episode I collection.
