@@ -20,7 +20,7 @@ docker_image := kdeneon/plasma:developer
 # Descends into "src" in order to exclude it from final path within Zip.
 package:
 	mkdir -p $(build_dir)
-	cd src && zip -r ../$(build_dir)/$(file) .
+	cd src && zip -r ../$(build_dir)/$(file) contents metadata.* *.png
 
 # Install our comic package with KDE for the current user
 install: package

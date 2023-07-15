@@ -1,9 +1,10 @@
 /**
- * Jest test suite for main file of our comic plugin.
- * NOTE: Jest does not exactly match the environment of KDE JavaScript.
+ * Jest test suite for the main.js entrypoint file of our comic plugin.
+ * NOTE: NodeJS does not really match the environment of KDE JavaScript.
+ * But we can at least test our custom functions.
  */
 
-const main = require('./main')
+const main = require('../contents/code/main')
 
 /* global expect test */
 
