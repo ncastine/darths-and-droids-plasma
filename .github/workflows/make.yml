@@ -1,4 +1,4 @@
-name: Make CI
+name: Package/Test
 
 on:
   push:
@@ -24,5 +24,6 @@ jobs:
         node-version: 18.x
     - name: Install dependencies
       run: npm ci
-    - run: npm test
+    - run: npm test -- --color
+    # Leave color OFF for lint. GitHub will show individual errors due to wording in the report line.
     - run: npm run lint
