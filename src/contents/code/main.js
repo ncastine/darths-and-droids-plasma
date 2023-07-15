@@ -20,8 +20,7 @@
  *   This KDE plasma Comic strip plugin was adapted with permission.       *
  ***************************************************************************/
 
-// Originally inspired by
-// https://techbase.kde.org/Development/Tutorials/Plasma4/ComicPlugin
+// Comic developer guide: https://develop.kde.org/docs/plasma/comic-plugin
 
 /* global comic */
 

@@ -50,7 +50,7 @@ In the minimalist environment you will not have full access to all the features 
 The `~/.xsession-errors` file is not populated without a full X Session.
 You will want to load KDE on a Linux VM if you need robust debugging.
 
-For some level of debug within Docker you can set `ENABLE_DEBUG = true` in [main.js](src/contents/code/main.js#L31).
+For some level of debug within Docker you can set `ENABLE_DEBUG = true` in [main.js](src/contents/code/main.js#L30).
 Doing so will prefix some log statements to the Alt text that appears over the comic images.
 A limited amount of text may be visible on hover;
 you can view more via the `.conf` files cached in the `~/.local/share/plasma_engine_comic` directory.
