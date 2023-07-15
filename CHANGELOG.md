@@ -10,6 +10,8 @@ ESLint for code standards enforcement.
 
 ## 2020-04-19
 
+**Fix** regular expression that identifies image URL and title.
+
 Build script to produce comic package.
 
 ## 2016-06-27
