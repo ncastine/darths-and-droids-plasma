@@ -210,11 +210,9 @@ function zeroPad (input, totalDigits) {
   // Result must be a string
   let result = '' + input
 
-  if (totalDigits > result.length) {
-    const count = totalDigits - result.length
-    for (let i = 0; i < count; i++) {
-      result = '0' + result
-    }
+  const addCount = totalDigits - result.length
+  for (let i = 0; i < addCount; i++) {
+    result = '0' + result
   }
 
   return result
