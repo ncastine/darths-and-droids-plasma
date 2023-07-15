@@ -1,7 +1,7 @@
 {
   "name": "darths-and-droids-plasma",
   "private": true,
-  "description": "Lint runner for Darths & Droids KDE Plasma Comic",
+  "description": "Unit test runner for Darths & Droids KDE Plasma Comic",
   "devDependencies": {
     "eslint": "^8.45.0",
     "eslint-config-standard": "^17.1.0",
