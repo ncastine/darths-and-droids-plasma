@@ -5,7 +5,7 @@
 
 const main = require('./main')
 
-/* global test expect */
+/* global expect test */
 
 test('when no padding needed', () => {
   expect(main.zeroPad('1234')).toBe('1234')
@@ -20,7 +20,7 @@ test('padding specified exactly', () => {
 })
 
 test('default padding undefined input', () => {
-  expect(main.zeroPad()).toBe('0000BAD')
+  expect(main.zeroPad()).toBe('0000')
 })
 
 test('default padding null input', () => {
