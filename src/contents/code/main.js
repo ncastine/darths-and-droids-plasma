@@ -62,7 +62,7 @@ function init () {
 // eslint-disable-next-line no-unused-vars
 function pageRetrieved (id, data) {
   // Determine the latest episode
-  if (id == comic.User) {
+  if (id === comic.User) {
     debug('Looking up latest episode')
     // Darths & Droids home page has latest comic image
     const matchLast = IMAGE_URL_PARSER.exec(data)
@@ -75,7 +75,7 @@ function pageRetrieved (id, data) {
       comic.lastIdentifier = getComicNumber(matchLast[2])
       debug('Parsed last ID: ' + comic.lastIdentifier + ' current ID: ' + comic.identifier)
       // Switch to specified episode if different from last
-      if (comic.identifierSpecified && comic.lastIdentifier != comic.identifier) {
+      if (comic.identifierSpecified && comic.lastIdentifier !== comic.identifier) {
         navigateToEpisode(comic.identifier)
         return
       }
@@ -89,7 +89,7 @@ function pageRetrieved (id, data) {
   }
 
   // Normal episode fetch
-  if (id == comic.Page || id == comic.User) {
+  if (id === comic.Page || id === comic.User) {
     debug('Rendering episode: ' + comic.identifier)
     // A standard page parsing. Find the image.
     const matchComic = IMAGE_URL_PARSER.exec(data)
@@ -117,7 +117,7 @@ function pageRetrieved (id, data) {
     }
   }
 
-  if (id == comic.Image) {
+  if (id === comic.Image) {
     debug('Image downloaded')
   } else {
     debug('Ignored request type ID: ' + id + ', data: ' + data)
@@ -174,7 +174,7 @@ function getAdditionalText (html) {
   let copyOn = false
   const lines = html.split('\n')
 
-  for (var index in lines) {
+  for (const index in lines) {
     const line = lines[index]
 
     if (line.match(/.*<div class="text">.*/i) != null) {
@@ -189,7 +189,7 @@ function getAdditionalText (html) {
   // Prepend any debug messages, to ensure they can be seen
   if (debugMessages.length > 0) {
     let debugHeader = ''
-    for (var index in debugMessages) {
+    for (const index in debugMessages) {
       debugHeader += '<p>' + debugMessages[index] + '</p>'
     }
     debugHeader += ' END DEBUG'
@@ -202,15 +202,17 @@ function getAdditionalText (html) {
 // Zero-pad a number string from the left.
 // Default is 4 digits.
 function zeroPad (input, totalDigits) {
-  // Ensure input is in string format
+  // Ensure input is in string format.
+  // eslint-disable-next-line no-new-wrappers
   input = new String(input)
-  // Default to 4 digits
+  // Default to 4 digits.
+  // eslint-disable-next-line no-new-wrappers
   totalDigits = new Number(totalDigits || 4)
 
   let result = input
 
   if (totalDigits > input.length) {
-    for (i = 0; i < (totalDigits - input.length); i++) {
+    for (let i = 0; i < (totalDigits - input.length); i++) {
       result = '0' + result
     }
   }
