@@ -226,3 +226,6 @@ function getComicNumber (identifier) {
   // interpreted as octal by some JavaScript implementations
   return parseInt(identifier, 10)
 }
+
+// Need to export any functions that will be unit tested by Jest
+module.exports = { zeroPad }
