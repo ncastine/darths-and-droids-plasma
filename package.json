@@ -1,0 +1,26 @@
+{
+  "name": "darths-and-droids-plasma",
+  "private": true,
+  "description": "Lint runner for Darths & Droids KDE Plasma Comic",
+  "main": "src/contents/code/main.js",
+  "devDependencies": {
+    "eslint": "^8.45.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^16.0.1",
+    "eslint-plugin-promise": "^6.1.1"
+  },
+  "scripts": {
+    "test": "eslint src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ncastine/darths-and-droids-plasma.git"
+  },
+  "keywords": [
+    "comic",
+    "kde",
+    "plasma"
+  ],
+  "homepage": "https://github.com/ncastine/darths-and-droids-plasma#readme"
+}
