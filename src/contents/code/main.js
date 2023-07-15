@@ -28,7 +28,7 @@
 const BASE_URL = 'https://www.darthsanddroids.net'
 
 // Enable display of debug messages in comic Alt text
-const ENABLE_DEBUG = true
+const ENABLE_DEBUG = false
 
 // Regular expression to get comic image URL and title from within page HTML.
 // NOTE: Named capturing groups do not seem to be supported in KDE.
@@ -46,7 +46,9 @@ function init () {
   comic.comicAuthor = 'The Comic Irregulars'
   comic.shopUrl = 'http://www.cafepress.com/mezzacotta/6391587'
 
-  debugEnv()
+  if (ENABLE_DEBUG) {
+    debugEnv()
+  }
 
   // Fetch page directly if we don't need more information
   if (comic.identifierSpecified && comic.lastIdentifier) {
