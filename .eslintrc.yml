@@ -1,0 +1,4 @@
+env:
+  browser: true
+  es2016: true
+extends: standard
