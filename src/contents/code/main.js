@@ -202,22 +202,21 @@ function getAdditionalText (html) {
 // Zero-pad a number string from the left.
 // Default is 4 digits.
 function zeroPad (input, totalDigits) {
-  // Ensure input is in string format.
-  // eslint-disable-next-line no-new-wrappers
-  input = new String(input)
   // Default to 4 digits.
   // eslint-disable-next-line no-new-wrappers
   totalDigits = new Number(totalDigits || 4)
 
-  let result = input
+  // Result must be a string
+  let result = '' + input
 
-  if (totalDigits > input.length) {
-    for (let i = 0; i < (totalDigits - input.length); i++) {
+  if (totalDigits > result.length) {
+    const count = totalDigits - result.length
+    for (let i = 0; i < count; i++) {
       result = '0' + result
     }
   }
 
-  return result.toString() // Return as simple string
+  return result
 }
 
 // Get the comic number part from an identifier string.
