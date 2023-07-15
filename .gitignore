@@ -1,5 +1,6 @@
 # Build output
 build/
+coverage/
 node_modules/
 
 # IDE configuration
