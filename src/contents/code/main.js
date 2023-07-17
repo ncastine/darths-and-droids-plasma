@@ -227,5 +227,10 @@ function getComicNumber (identifier) {
   return parseInt(identifier, 10)
 }
 
-// Need to export any functions that will be unit tested by Jest
-module.exports = { zeroPad }
+// Need to export any functions that will be unit tested by Jest.
+// Only export when this file is being loaded in a Jest context.
+// Want to avoid messing up KDE JavaScript environment.
+// eslint-disable-next-line no-undef
+if (jest && test && module) {
+  module.exports = { zeroPad }
+}
