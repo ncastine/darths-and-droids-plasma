@@ -2,7 +2,7 @@
 
 ![Make workflow](../../actions/workflows/make.yml/badge.svg)
 
-Designed for the **Comic Strip** viewer in [KDE](https://kde.org "KDE Community Home") Plasma desktop.
+Plugin to present [Darths & Droids](https://www.darthsanddroids.net) within the **Comic Strip** viewer in [KDE](https://kde.org "KDE Community Home") Plasma desktop.
 
 ![Screenshot](image/screenshot.png "Sample screenshot of comic widget")
 
